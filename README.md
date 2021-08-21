@@ -1,0 +1,2 @@
+# TheaterSeating
+Theater Seating Algorithm
