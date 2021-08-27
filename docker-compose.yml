@@ -1,0 +1,32 @@
+version: "3.7"
+
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      SERVER_DATABASE_URL: postgresql://postgres:postgres@db:5432/hall?sslmode=disable
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./bin:/bin
+      - ./log:/var/log
+    networks:
+      - app-network
+    depends_on:
+      - db
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=hall
+    networks:
+      - app-network
+
+networks:
+  app-network:
