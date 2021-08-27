@@ -1,8 +1,10 @@
 package seating
 
-import "github.com/kAvEh--/TheaterSeating/cmd/model"
+import (
+	"github.com/kAvEh--/TheaterSeating/cmd/database"
+)
 
-func FindBestAlgorithm(h model.Hall, rank string, users []int) *model.Hall {
+func FindBestAlgorithm(h database.Hall, rank string, users []int) *database.Hall {
 	c1 := make(chan int)
 	c2 := make(chan int)
 	c3 := make(chan int)
@@ -43,7 +45,7 @@ func FindBestAlgorithm(h model.Hall, rank string, users []int) *model.Hall {
 	return &h1
 }
 
-func FillSeating(h model.Hall, rank string, users []int, c chan int) {
+func FillSeating(h database.Hall, rank string, users []int, c chan int) {
 	rIndex := 0
 	sIndex := 0
 	isLtr := true
@@ -81,7 +83,7 @@ func FillSeating(h model.Hall, rank string, users []int, c chan int) {
 	c <- breakNum
 }
 
-func FillSeatsBestFit(h model.Hall, rank string, users []int, rowFinder func(model.Hall, string, int) int, c chan int) {
+func FillSeatsBestFit(h database.Hall, rank string, users []int, rowFinder func(database.Hall, string, int) int, c chan int) {
 	rIndex := 0
 	breakNum := 0
 	for i := 0; i < len(users); i++ {
@@ -106,7 +108,7 @@ func FillSeatsBestFit(h model.Hall, rank string, users []int, rowFinder func(mod
 	c <- breakNum
 }
 
-func reserve(h *model.Hall, rank string, row int, group int, count int) {
+func reserve(h *database.Hall, rank string, row int, group int, count int) {
 	if h.Ranks[rank][row].IsRTL {
 		index := len(h.Ranks[rank][row].Seats) - 1
 		for i := 0; i < count; i++ {
@@ -130,7 +132,7 @@ func reserve(h *model.Hall, rank string, row int, group int, count int) {
 	}
 }
 
-func findBestFit(h model.Hall, rank string, num int) int {
+func findBestFit(h database.Hall, rank string, num int) int {
 	ret := -1
 	for i := 0; i < len(h.Ranks[rank]); i++ {
 		if h.Ranks[rank][i].EmptySeatNum >= num {
@@ -143,7 +145,7 @@ func findBestFit(h model.Hall, rank string, num int) int {
 	return ret
 }
 
-func findFirstFit(h model.Hall, rank string, num int) int {
+func findFirstFit(h database.Hall, rank string, num int) int {
 	for i := 0; i < len(h.Ranks[rank]); i++ {
 		if h.Ranks[rank][i].EmptySeatNum >= num {
 			return i

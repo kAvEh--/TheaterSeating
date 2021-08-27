@@ -1,11 +1,11 @@
-package model
+package database
 
 import "gorm.io/gorm"
 
 type User struct {
 	gorm.Model
 	Name  string
-	Seats []Seat
+	Seats []Seat `gorm:"foreignKey:ID"`
 }
 
 type Seat struct {
@@ -21,13 +21,13 @@ type Seat struct {
 type DBRow struct {
 	gorm.Model
 	Number int
-	Seats  []Seat
+	Seats  []Seat `gorm:"foreignKey:ID"`
 }
 
 type DBHall struct {
 	gorm.Model
 	Name string
-	Rows []Row
+	Rows []DBRow `json:"rows" gorm:"foreignKey:ID"`
 }
 
 type Hall struct {
@@ -37,9 +37,9 @@ type Hall struct {
 }
 
 type Row struct {
-	ID           uint
+	gorm.Model
 	Number       int
-	Seats        []Seat
+	Seats        []Seat `gorm:"foreignKey:ID"`
 	EmptySeatNum int
 	IsRTL        bool
 }
