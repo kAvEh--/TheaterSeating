@@ -35,60 +35,6 @@ func main() {
 	app.Put("/hall", AddHall)
 	app.Get("/hal/:id", GetHall)
 	app.Listen(":3000")
-
-	//h := seating.Hall{
-	//	Ranks: map[string]seating.Rank{
-	//		"red": {
-	//			Rows: []seating.Row{
-	//				{EmptySeatNum: 8,
-	//					Seats: []database.Seat{
-	//						{State: 0},
-	//						{State: 0},
-	//						{State: 0},
-	//						{State: 0},
-	//						{State: 0},
-	//						{State: 0},
-	//						{State: 0},
-	//						{State: 0},
-	//					},
-	//				},
-	//				{EmptySeatNum: 8,
-	//					IsRTL: true,
-	//					Seats: []database.Seat{
-	//						{State: 0},
-	//						{State: 0},
-	//						{State: 0},
-	//						{State: 0},
-	//						{State: 0},
-	//						{State: 0},
-	//						{State: 0},
-	//						{State: 0},
-	//					},
-	//				},
-	//				{EmptySeatNum: 8,
-	//					Seats: []database.Seat{
-	//						{State: 0},
-	//						{State: 0},
-	//						{State: 0},
-	//						{State: 0},
-	//						{State: 0},
-	//						{State: 0},
-	//						{State: 0},
-	//						{State: 0},
-	//					},
-	//				},
-	//			},
-	//		},
-	//	},
-	//}
-
-	//h = *seating.FindBestAlgorithm(h, "red", []int{1, 3, 4, 4, 5, 1, 4, 2})
-	//for i := 0; i < len(h.Ranks["red"].Rows); i++ {
-	//	for j := 0; j < len(h.Ranks["red"].Rows[i].Seats); j++ {
-	//		fmt.Print(h.Ranks["red"].Rows[i].Seats[j].User, " ")
-	//	}
-	//	fmt.Println()
-	//}
 }
 
 func GetHall(c *fiber.Ctx) error {
@@ -106,9 +52,6 @@ func AddHall(c *fiber.Ctx) error {
 	if err := c.BodyParser(h); err != nil {
 		return err
 	}
-
-	logrus.Info("--->", len(h.Rows))
-	logrus.Info()
 
 	database.CreateHall(h)
 
