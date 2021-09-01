@@ -5,29 +5,31 @@ import "gorm.io/gorm"
 type User struct {
 	gorm.Model
 	Name  string
-	Seats []Seat `gorm:"foreignKey:ID"`
+	Seats []Seat `gorm:"-"`
 }
 
 type Seat struct {
-	gorm.Model
+	gorm.Model `json:"-"`
 	Rank       string
 	State      int
-	User       int
+	UserID     uint
 	IsAisle    bool
 	IsFrontRow bool
 	IsHighSeat bool
+	DBRowID    uint `json:"-"`
 }
 
 type DBRow struct {
-	gorm.Model
-	Number int
-	Seats  []Seat `gorm:"foreignKey:ID"`
+	gorm.Model `json:"-"`
+	Number     int
+	Seats      []Seat `gorm:"foreignkey:DBRowID;" json:"seats"`
+	DBHallID   uint
 }
 
 type DBHall struct {
 	gorm.Model
-	Name string
-	Rows []DBRow `json:"rows" gorm:"foreignKey:ID"`
+	Name   string
+	DbRows []DBRow `gorm:"foreignkey:DBHallID;" json:"rows"`
 }
 
 type Hall struct {
@@ -37,9 +39,9 @@ type Hall struct {
 }
 
 type Row struct {
-	gorm.Model
+	gorm.Model   `json:"-"`
 	Number       int
-	Seats        []Seat `gorm:"foreignKey:ID"`
+	Seats        []Seat
 	EmptySeatNum int
 	IsRTL        bool
 }

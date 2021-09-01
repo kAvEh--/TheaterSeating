@@ -23,6 +23,7 @@ func main() {
 	})
 
 	dsn := viper.GetString("database_url")
+	dsn = "postgresql://postgres:postgres@db:5432/hall?sslmode=disable"
 	database.Initialize(dsn)
 
 	app := fiber.New()
@@ -81,12 +82,16 @@ func ReserveSeat(c *fiber.Ctx) error {
 		return err
 	}
 
+	for i := 0; i < len(r.Users); i++ {
+		database.CreateUser("User No " + strconv.Itoa(i))
+	}
+
 	h1 := seating.FindBestAlgorithm(hall, r.Rank, r.Users)
 	for _, v := range h1.Ranks {
 		for i := 0; i < len(v); i++ {
 			for j := 0; j < len(v[i].Seats); j++ {
 				if v[i].Seats[j].State == 1 {
-					database.ReserveSeat(uint(v[i].Seats[j].User), v[i].Seats[j].ID)
+					database.ReserveSeat(v[i].Seats[j].UserID, v[i].Seats[j].ID)
 				}
 			}
 		}

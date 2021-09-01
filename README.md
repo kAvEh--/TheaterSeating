@@ -28,9 +28,58 @@ The PostgreSQl database will be run in Docker
 ### API
 the API implemented with these endpoints:
 - PUT >> /hall : create new hall.
+```shell
+curl --location --request PUT '127.0.0.1:3000/hall' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "name": "hall91",
+    "rows": [
+        {
+            "number": 1,
+            "seats": [
+                {"rank" : "red"},
+                {"rank" : "red"},
+                {"rank" : "red"},
+                {"rank" : "red"},
+                {"rank" : "red"},
+                {"rank" : "red"}
+            ]
+        },
+        {
+            "number": 2,
+            "seats": [
+                {"rank" : "blue"},
+                {"rank" : "blue"},
+                {"rank" : "blue"},
+                {"rank" : "blue"},
+                {"rank" : "blue"},
+                {"rank" : "blue"}
+            ]
+        }
+    ]
+}
+```
 - GET >> /hall/:id : get hall data with id
+```shell
+curl --location --request GET '127.0.0.1:3000/hal/1' \
+--data-raw ''
+```
 - GET >> /user/:id : get user data and reservation list
+```shell
+curl --location --request GET '127.0.0.1:3000/user/1'
+```
+
 - POST >> /reserve/:hall : send list of user group with rank
+```shell
+curl --location --request POST '127.0.0.1:3000/reserve/6' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "rank": "red",
+    "users":[
+        1,2,1
+    ]
+}'
+```
 
 ### Deployment
 

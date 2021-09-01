@@ -2,6 +2,7 @@ package seating
 
 import (
 	"github.com/kAvEh--/TheaterSeating/cmd/database"
+	"strconv"
 )
 
 func FindBestAlgorithm(h database.Hall, rank string, users []int) *database.Hall {
@@ -50,12 +51,22 @@ func FillSeating(h database.Hall, rank string, users []int, c chan int) {
 	sIndex := 0
 	isLtr := true
 	r := h.Ranks[rank]
+	for _, v := range h.Ranks {
+		s := ""
+		for i := 0; i < len(v); i++ {
+			for j := 0; j < len(v[i].Seats); j++ {
+				s += strconv.Itoa(int(v[i].Seats[j].ID))
+			}
+		}
+		s += "\n"
+
+	}
 	breakNum := 0
 	for i := 0; i < len(users); i++ {
 		for j := 0; j < users[i]; j++ {
 			if r[rIndex].Seats[sIndex].State == 0 {
 				r[rIndex].Seats[sIndex].State = 1
-				r[rIndex].Seats[sIndex].User = i + 1
+				r[rIndex].Seats[sIndex].UserID = uint(i + 1)
 				if isLtr {
 					sIndex++
 					if sIndex >= len(r[rIndex].Seats) && rIndex < len(r)-1 {
@@ -116,7 +127,7 @@ func reserve(h *database.Hall, rank string, row int, group int, count int) {
 				index--
 			}
 			h.Ranks[rank][row].Seats[index].State = 1
-			h.Ranks[rank][row].Seats[index].User = group
+			h.Ranks[rank][row].Seats[index].UserID = uint(group)
 			h.Ranks[rank][row].EmptySeatNum--
 		}
 	} else {
@@ -126,7 +137,7 @@ func reserve(h *database.Hall, rank string, row int, group int, count int) {
 				index++
 			}
 			h.Ranks[rank][row].Seats[index].State = 1
-			h.Ranks[rank][row].Seats[index].User = group
+			h.Ranks[rank][row].Seats[index].UserID = uint(group)
 			h.Ranks[rank][row].EmptySeatNum--
 		}
 	}
